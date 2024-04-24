@@ -1,7 +1,14 @@
 import { Button, Divider } from '@mui/material';
 import { FilterForm } from '../components/FilterForm';
-import { getAllCategories, getAllTags } from '../services/QuizApi';
-import { useEffect, useState } from 'react';
+import {
+  getAllCategories,
+  getAllTags,
+  getQuestions,
+} from '../services/QuizApi';
+import { useContext, useEffect, useState } from 'react';
+import QuestionsContext from '../store/questions';
+import { useNavigate } from 'react-router-dom';
+import { MainLayout } from '../layouts/MainLayout';
 
 export const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -30,12 +37,23 @@ export const Home = () => {
     fetchTags();
   }, []);
 
-  return (
-    <div className="w-full h-screen">
-      <nav className="w-full bg-blue-600 py-3">
-        <div className="w-full max-w-7xl mx-auto text-white">Quiz app</div>
-      </nav>
+  const questionsCtx = useContext(QuestionsContext);
 
+  const navigate = useNavigate();
+
+  const startRandomQuizHandler = async () => {
+    try {
+      const questionsData = await getQuestions();
+      questionsCtx.onChangeQuestionsData(questionsData.data);
+
+      navigate('/quiz');
+    } catch (error) {
+      throw new error('questions laod failed');
+    }
+  };
+
+  return (
+    <MainLayout>
       <div className="w-full max-w-7xl mx-auto mt-10 text-lg text-black">
         <p>
           Welcome to the Ultimate Quiz Experience! Test Your Knowledge and Have
@@ -45,10 +63,12 @@ export const Home = () => {
       </div>
 
       <div className="w-full max-w-7xl mx-auto mt-10">
-        <Button className="!capitalize">Try random quiz</Button>
+        <Button className="!capitalize" onClick={startRandomQuizHandler}>
+          Try random quiz
+        </Button>
         <Divider className="!mt-5">or</Divider>
         <FilterForm categories={categories} tags={tags} />
       </div>
-    </div>
+    </MainLayout>
   );
 };
