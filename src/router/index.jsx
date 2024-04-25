@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Home } from '../pages/Home';
 import { QuizGround } from '../pages/QuizGround';
+import { Results } from '../pages/Results';
 
 const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
   {
     path: '/quiz',
     element: <QuizGround />,
+  },
+  {
+    path: '/results',
+    element: <Results />,
   },
 ]);
 
