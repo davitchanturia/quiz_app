@@ -3,9 +3,12 @@ import { useEffect, useContext, useState } from 'react';
 import QuestionsContext from '../store/questions';
 import { Question } from '../components/Question';
 import { useNavigate } from 'react-router-dom';
+import ResultsContext from '../store/results';
 
 export const QuizGround = () => {
   const questionsCtx = useContext(QuestionsContext);
+
+  const resultCtx = useContext(ResultsContext);
 
   const navigate = useNavigate();
 
@@ -17,11 +20,14 @@ export const QuizGround = () => {
 
   const [step, setStep] = useState(0);
 
-  const nextStepHandler = () => {
+  const nextStepHandler = (isAnswerCorrect) => {
     if (questionsCtx.questions.length === step) {
       navigate('/results');
       return;
     }
+
+    if (isAnswerCorrect === 'CORRECT') resultCtx.onChangeResult('CORRECT');
+    if (isAnswerCorrect === 'INCORRECT') resultCtx.onChangeResult('INCORRECT');
 
     setStep((prevVal) => prevVal + 1);
   };

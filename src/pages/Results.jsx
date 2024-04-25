@@ -1,3 +1,10 @@
+import { useContext } from 'react';
+import ResultsContext from '../store/results';
+
 export const Results = () => {
-  return <div>results</div>;
+  const resultCtx = useContext(ResultsContext);
+
+  console.log(resultCtx.result);
+
+  return <div>results page</div>;
 };

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { mixObjects } from '../helpers/utils';
+import { Card } from '@mui/material';
 
 export const Question = ({ item, onNextStep }) => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
@@ -20,7 +21,7 @@ export const Question = ({ item, onNextStep }) => {
       setButtonIsDisabled(true);
 
       setTimeout(() => {
-        onNextStep();
+        onNextStep('INCORRECT');
         clearStateValues();
       }, 300);
       return;
@@ -54,7 +55,7 @@ export const Question = ({ item, onNextStep }) => {
     if (filteredCorrectAnswers.length === correctAnswers.length) {
       //emit next step
       setTimeout(() => {
-        onNextStep();
+        onNextStep('CORRECT');
         clearStateValues();
       }, 300);
     }
@@ -70,13 +71,13 @@ export const Question = ({ item, onNextStep }) => {
     <div className="w-full">
       <div className="text-center">{item?.question}</div>
 
-      <div className="grid grid-cols-1 place-content-center w-2/5 mx-auto gap-4  mt-8">
+      <div className="flex flex-col !justify-center !items-center w-2/5 mx-auto gap-4  mt-8 ">
         {answers.map((item, index) => (
           <Card
             onClick={checkAnswerHandler.bind(undefined, item)}
             key={index}
             variant="outlined"
-            className={`!px-8 !py-1 !min-w-70 !max-w-[400px] !text-center !cursor-pointer ${markAsGreen(
+            className={`!px-8 !py-1 !min-w-70 !max-w-[400px] !text-center !cursor-pointer !w-full ${markAsGreen(
               item
             )}`}
           >
