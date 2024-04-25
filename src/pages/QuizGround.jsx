@@ -4,6 +4,7 @@ import QuestionsContext from '../store/questions';
 import { Question } from '../components/Question';
 import { useNavigate } from 'react-router-dom';
 import ResultsContext from '../store/results';
+import { answer } from '../helpers/enum';
 
 export const QuizGround = () => {
   const questionsCtx = useContext(QuestionsContext);
@@ -26,8 +27,10 @@ export const QuizGround = () => {
       return;
     }
 
-    if (isAnswerCorrect === 'CORRECT') resultCtx.onChangeResult('CORRECT');
-    if (isAnswerCorrect === 'INCORRECT') resultCtx.onChangeResult('INCORRECT');
+    if (isAnswerCorrect === answer.CORRECT)
+      resultCtx.onChangeResult(answer.CORRECT);
+    if (isAnswerCorrect === answer.INCORRECT)
+      resultCtx.onChangeResult(answer.INCORRECT);
 
     setStep((prevVal) => prevVal + 1);
   };

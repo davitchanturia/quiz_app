@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { mixObjects } from '../helpers/utils';
 import { Card } from '@mui/material';
+import { answer } from '../helpers/enum';
 
 export const Question = ({ item, onNextStep }) => {
   const [correctAnswers, setCorrectAnswers] = useState([]);
@@ -21,7 +22,7 @@ export const Question = ({ item, onNextStep }) => {
       setButtonIsDisabled(true);
 
       setTimeout(() => {
-        onNextStep('INCORRECT');
+        onNextStep(answer.INCORRECT);
         clearStateValues();
       }, 300);
       return;
@@ -55,7 +56,7 @@ export const Question = ({ item, onNextStep }) => {
     if (filteredCorrectAnswers.length === correctAnswers.length) {
       //emit next step
       setTimeout(() => {
-        onNextStep('CORRECT');
+        onNextStep(answer.CORRECT);
         clearStateValues();
       }, 300);
     }

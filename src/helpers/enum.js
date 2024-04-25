@@ -3,3 +3,8 @@ export const resultsScore = {
   GOOD: 'GOOD',
   BEST: 'BEST',
 };
+
+export const answer = {
+  CORRECT: 'CORRECT',
+  INCORRECT: 'INCORRECT',
+};

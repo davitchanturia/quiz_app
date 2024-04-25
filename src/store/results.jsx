@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import { answer } from '../helpers/enum';
 
 const ResultsContext = React.createContext({
   result: {},
@@ -8,13 +9,13 @@ const ResultsContext = React.createContext({
 export const ResultsContextProvider = (props) => {
   const updateResults = (state, action) => {
     switch (action.type) {
-      case 'CORRECT':
+      case answer.CORRECT:
         return {
           ...state,
           correct: state.correct + 1,
         };
 
-      case 'INCORRECT':
+      case answer.INCORRECT:
         return {
           ...state,
           incorrect: state.incorrect + 1,
@@ -31,8 +32,8 @@ export const ResultsContextProvider = (props) => {
   });
 
   const onChangeResult = (answerType) => {
-    if (answerType === 'CORRECT') dispatch({ type: 'CORRECT' });
-    if (answerType === 'INCORRECT') dispatch({ type: 'INCORRECT' });
+    if (answerType === answer.CORRECT) dispatch({ type: answer.CORRECT });
+    if (answerType === answer.INCORRECT) dispatch({ type: answer.INCORRECT });
   };
 
   return (
