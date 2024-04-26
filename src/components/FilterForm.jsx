@@ -6,13 +6,19 @@ import {
   Select,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { getQuestions } from '../services/QuizApi';
+import QuestionsContext from '../store/questions';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const FilterForm = ({ categories, tags }) => {
-  const [category, setCategory] = useState(1);
-  const [tag, setTag] = useState(1);
+  const [category, setCategory] = useState('');
+  const [tag, setTag] = useState('');
   const [difficulty, setDifficulty] = useState('easy');
   const [limit, setLimit] = useState(0);
+
+  const questionsCtx = useContext(QuestionsContext);
 
   const handleTagChange = (e) => {
     setTag(e.target.value);
@@ -30,11 +36,22 @@ export const FilterForm = ({ categories, tags }) => {
     setLimit(e.target.value);
   };
 
-  const submitHandler = () => {
-    console.log(category);
-    console.log(tag);
-    console.log(difficulty);
-    console.log(limit);
+  const navigate = useNavigate();
+
+  const submitHandler = async () => {
+    try {
+      const questionsData = await getQuestions({
+        limit,
+        category,
+        tag,
+        difficulty,
+      });
+      questionsCtx.onChangeQuestionsData(questionsData.data);
+
+      navigate('/quiz');
+    } catch (error) {
+      throw new error('questions load failed');
+    }
   };
 
   return (
@@ -54,7 +71,7 @@ export const FilterForm = ({ categories, tags }) => {
             </MenuItem>
 
             {categories.map((category) => (
-              <MenuItem value={category.id} key={category.id}>
+              <MenuItem value={category.name} key={category.id}>
                 {category.name}
               </MenuItem>
             ))}
@@ -75,7 +92,7 @@ export const FilterForm = ({ categories, tags }) => {
             </MenuItem>
 
             {tags.map((tag) => (
-              <MenuItem value={tag.id} key={tag.id}>
+              <MenuItem value={tag.name} key={tag.id}>
                 {tag.name}
               </MenuItem>
             ))}
