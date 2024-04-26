@@ -4,7 +4,13 @@ import { answer } from '../helpers/enum';
 const ResultsContext = React.createContext({
   result: {},
   onChangeResult: () => {},
+  onClearResults: () => {},
 });
+
+const initialValue = {
+  correct: 0,
+  incorrect: 0,
+};
 
 export const ResultsContextProvider = (props) => {
   const updateResults = (state, action) => {
@@ -21,19 +27,23 @@ export const ResultsContextProvider = (props) => {
           incorrect: state.incorrect + 1,
         };
 
+      case null:
+        return initialValue;
+
       default:
         return state;
     }
   };
 
-  const [result, dispatch] = useReducer(updateResults, {
-    correct: 0,
-    incorrect: 0,
-  });
+  const [result, dispatch] = useReducer(updateResults, initialValue);
 
   const onChangeResult = (answerType) => {
     if (answerType === answer.CORRECT) dispatch({ type: answer.CORRECT });
     if (answerType === answer.INCORRECT) dispatch({ type: answer.INCORRECT });
+  };
+
+  const onClearResults = () => {
+    dispatch({ type: null });
   };
 
   return (
@@ -41,6 +51,7 @@ export const ResultsContextProvider = (props) => {
       value={{
         result,
         onChangeResult,
+        onClearResults,
       }}
     >
       {props.children}

@@ -29,13 +29,19 @@ export const Results = () => {
 
   const text = ResultScoreTextMap[score]?.(resultCtx.result.correct, sum);
 
+  const resetResults = () => {
+    resultCtx.onClearResults();
+  };
+
   return (
     <MainLayout>
       <div className="w-full max-w-7xl mx-auto mt-10 text-black text-center text-xl">
         <div>{text}</div>
 
         <Link to="/">
-          <Button className="!mt-8 !capitalize">Go to main page</Button>
+          <Button className="!mt-8 !capitalize" onClick={resetResults}>
+            Go to main page
+          </Button>
         </Link>
       </div>
     </MainLayout>
