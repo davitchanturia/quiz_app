@@ -4,13 +4,13 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Snackbar,
   TextField,
 } from '@mui/material';
 import { useContext, useState } from 'react';
 import { getQuestions } from '../services/QuizApi';
 import QuestionsContext from '../store/questions';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 export const FilterForm = ({ categories, tags }) => {
   const [category, setCategory] = useState('');
@@ -38,6 +38,12 @@ export const FilterForm = ({ categories, tags }) => {
 
   const navigate = useNavigate();
 
+  const [error, setError] = useState(false);
+
+  const handleClose = () => {
+    setError(false);
+  };
+
   const submitHandler = async () => {
     try {
       const questionsData = await getQuestions({
@@ -50,6 +56,8 @@ export const FilterForm = ({ categories, tags }) => {
 
       navigate('/quiz');
     } catch (error) {
+      setError(true);
+      console.log('agia erori', error.response.status);
       throw new error('questions load failed');
     }
   };
@@ -131,6 +139,13 @@ export const FilterForm = ({ categories, tags }) => {
       <div className="mt-3">
         <Button onClick={submitHandler}>Start</Button>
       </div>
+
+      <Snackbar
+        open={error}
+        onClose={handleClose}
+        message="questions were not found!"
+        autoHideDuration={3000}
+      />
     </div>
   );
 };
